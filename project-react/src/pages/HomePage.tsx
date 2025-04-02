@@ -6,42 +6,46 @@ import PrivacyNotice from "../components/PrivacyNotice";
 import ImageUploadSection from "../components/ImageUploadSection";
 import InformationSection from "../components/InformationSection";
 import CallToAction from "../components/CallToAction";
-import '../index.css';
+import { analyzeFace } from "../api/laravelApi";
+import TopMatches from "../components/TopMatches";
+import "../index.css";
+import BestMatch from "../components/BestMatch";
 
 const HomePage = () => {
   // Check dark mode preference
   const [darkMode, setDarkMode] = useState(() => {
-    const savedMode = localStorage.getItem('darkMode');
+    const savedMode = localStorage.getItem("darkMode");
     if (savedMode !== null) {
-      return savedMode === 'true';
+      return savedMode === "true";
     }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
   // Effect to apply dark mode
   useEffect(() => {
     const darkModeListener = (e: StorageEvent) => {
-      if (e.key === 'darkMode') {
-        setDarkMode(e.newValue === 'true');
+      if (e.key === "darkMode") {
+        setDarkMode(e.newValue === "true");
       }
     };
-    
-    window.addEventListener('storage', darkModeListener);
-    return () => window.removeEventListener('storage', darkModeListener);
+
+    window.addEventListener("storage", darkModeListener);
+    return () => window.removeEventListener("storage", darkModeListener);
   }, []);
 
   // Image states
   const [image1, setImage1] = useState<string | null>(null);
   const [selectedFile1, setSelectedFile1] = useState<File | null>(null);
-  
+
   // Drag states
   const [isDragging1, setIsDragging1] = useState(false);
-  
+
   // Result states
   const [comparisonResult, setComparisonResult] = useState<string | null>(null);
   const [isComparing, setIsComparing] = useState(false);
   const [confidenceScore, setConfidenceScore] = useState<number | null>(null);
-  
+  const [topMatches, setTopMatches] = useState<any[]>([]);
+
   // Drag event handlers for image
   const handleDragEnter1 = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -64,7 +68,7 @@ const HomePage = () => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging1(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       handleFileSelection(files[0], setSelectedFile1, setImage1);
@@ -73,19 +77,19 @@ const HomePage = () => {
 
   // File selection handler
   const handleFileSelection = (
-    file: File, 
+    file: File,
     setSelectedFile: (file: File | null) => void,
     setImagePreview: (url: string | null) => void
   ) => {
     // Check file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
-      alert('File size exceeds 5MB limit');
+      alert("File size exceeds 5MB limit");
       return;
     }
 
     // Check if file is an image
-    if (!file.type.match('image.*')) {
-      alert('Please select an image file');
+    if (!file.type.match("image.*")) {
+      alert("Please select an image file");
       return;
     }
 
@@ -104,26 +108,34 @@ const HomePage = () => {
     }
   };
 
-  const handleCompare = () => {
-    if (!image1) {
-      alert('Please select an image first');
+  const handleCompare = async () => {
+    if (!selectedFile1) {
+      alert("Please select an image first");
       return;
     }
-    
+
     setIsComparing(true);
     setComparisonResult(null);
-    
-    // Simulate API call with a delay
-    setTimeout(() => {
-      // Generate a random score between 75 and 98 for demo purposes
-      const score = Math.floor(Math.random() * 24) + 75;
-      setConfidenceScore(score);
-      setComparisonResult(score > 85 ?
-        "High confidence match found" :
-        score > 70 ? "Possible match found" : "No confident match"
-      );
+
+    try {
+      const result = await analyzeFace(selectedFile1);
+      // If result is an array of matches, store it in state:
+      if (Array.isArray(result) && result.length > 0) {
+        setTopMatches(result); // Save the API match array
+        const bestMatch = result[0];
+        const score = 1 - bestMatch.distance;
+        // Round score to 2 decimal points  
+        setConfidenceScore(Math.round(score * 100));
+        // Optionally, update the result message:
+        setComparisonResult("Analysis Complete");
+      } else {
+        setComparisonResult("No matches found");
+      }
+    } catch (error) {
+      alert("An error occurred while processing the image.");
+    } finally {
       setIsComparing(false);
-    }, 2500);
+    }
   };
 
   // Add this handler to reset everything
@@ -132,13 +144,18 @@ const HomePage = () => {
     setSelectedFile1(null);
     setComparisonResult(null);
     setConfidenceScore(null);
+    setTopMatches([]);
     setIsComparing(false);
   };
 
   return (
-    <div className={`d-flex flex-column min-vh-100 ${darkMode ? 'dark bg-dark text-white' : 'bg-light'}`}>
+    <div
+      className={`d-flex flex-column min-vh-100 ${
+        darkMode ? "dark bg-dark text-white" : "bg-light"
+      }`}
+    >
       <Navbar />
-      
+
       {/* Scrolling hero section with celebrity faces */}
       <ScrollImage />
 
@@ -146,9 +163,9 @@ const HomePage = () => {
         <div className="container">
           {/* Privacy notice section */}
           <PrivacyNotice />
-          
+
           {/* Main upload and comparison section */}
-          <ImageUploadSection 
+          <ImageUploadSection
             image={image1}
             isDragging={isDragging1}
             isComparing={isComparing}
@@ -163,18 +180,37 @@ const HomePage = () => {
             onReset={handleReset}
           />
 
+          {/* Display the matches returned by the API */}
+          {topMatches.length > 0 && (
+            <div>
+              <h2>Top Matches</h2>
+              <ul>
+                {topMatches.map((match) => (
+                  <li key={match.img}>
+                    {match.img}: {match.distance}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* Information tabs section */}
-          <InformationSection />
-          
+          {/* <InformationSection /> */}
+          <TopMatches />
+          <BestMatch file={selectedFile1} />
+
           {/* Call to action section */}
           <CallToAction />
         </div>
       </main>
 
       <Footer />
-      
+
       {/* Bootstrap icons */}
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      />
     </div>
   );
 };
