@@ -4,15 +4,18 @@ import time
 import heapq
 import concurrent.futures
 from deepface import DeepFace
+import multiprocessing
 
 def get_top_matches(reference_image_path, folder, top_n=3):
     """Compare the reference image to images in the folder and return the top N matches using multiprocessing."""
     start_time = time.perf_counter()
     image_files = [f for f in os.listdir(folder) if f.lower().endswith('.jpg')]
 
+    cpu_count = multiprocessing.cpu_count()
+
     results = []
     # Create a ProcessPoolExecutor to parallelize the verification calls.
-    with concurrent.futures.ProcessPoolExecutor(max_workers=3) as executor:
+    with concurrent.futures.ProcessPoolExecutor(cpu_count) as executor:
         # Submit a job for each image file.
         futures = {
             executor.submit(DeepFace.verify, reference_image_path, os.path.join(folder, img), model_name='ArcFace', enforce_detection=False): img
