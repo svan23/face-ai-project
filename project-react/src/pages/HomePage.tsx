@@ -6,10 +6,11 @@ import PrivacyNotice from "../components/PrivacyNotice";
 import ImageUploadSection from "../components/ImageUploadSection";
 import InformationSection from "../components/InformationSection";
 import CallToAction from "../components/CallToAction";
-import { analyzeFace } from "../api/laravelApi";
+import { analyzeFace, getBestMatch } from "../api/laravelApi";
 import TopMatches from "../components/TopMatches";
-import "../index.css";
 import BestMatch from "../components/BestMatch";
+import ImageComparisonPopup from "../components/ImageComparisonPopup"; // import the popup component
+import "../index.css";
 
 const HomePage = () => {
   // Check dark mode preference
@@ -32,6 +33,9 @@ const HomePage = () => {
     window.addEventListener("storage", darkModeListener);
     return () => window.removeEventListener("storage", darkModeListener);
   }, []);
+
+  // Add state for the popup visibility
+  const [showPopup, setShowPopup] = useState(false);
 
   // Image states
   const [image1, setImage1] = useState<string | null>(null);
@@ -118,16 +122,16 @@ const HomePage = () => {
     setComparisonResult(null);
 
     try {
-      const result = await analyzeFace(selectedFile1);
-      // If result is an array of matches, store it in state:
-      if (Array.isArray(result) && result.length > 0) {
-        setTopMatches(result); // Save the API match array
-        const bestMatch = result[0];
-        const score = 1 - bestMatch.distance;
-        // Round score to 2 decimal points  
+      const result = await getBestMatch(selectedFile1);
+      // result = {'img': best_match, 'distance': best_distance, 'image_base64': encoded_string}
+      if (result && result.img) {
+        // Save the single best match as an array for consistency with the UI that expects an array
+        setTopMatches([result]);
+        const score = 1 - result.distance;
         setConfidenceScore(Math.round(score * 100));
-        // Optionally, update the result message:
         setComparisonResult("Analysis Complete");
+        // Show the popup after a successful compare
+        setShowPopup(true);
       } else {
         setComparisonResult("No matches found");
       }
@@ -180,27 +184,13 @@ const HomePage = () => {
             onReset={handleReset}
           />
 
-          {/* Display the matches returned by the API */}
-          {topMatches.length > 0 && (
-            <div>
-              <h2>Top Matches</h2>
-              <ul>
-                {topMatches.map((match) => (
-                  <li key={match.img}>
-                    {match.img}: {match.distance}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
           {/* Information tabs section */}
           {/* <InformationSection /> */}
-          <TopMatches />
-          <BestMatch file={selectedFile1} />
+          {/* <TopMatches /> */}
+          {/* <BestMatch file={selectedFile1} /> */}
 
           {/* Call to action section */}
-          <CallToAction />
+          {/* <CallToAction /> */}
         </div>
       </main>
 
@@ -211,6 +201,17 @@ const HomePage = () => {
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
       />
+
+      {/* Conditionally render the popup if there's a result */}
+      {showPopup && image1 && topMatches.length > 0 && confidenceScore !== null && (
+        <ImageComparisonPopup
+          originalImage={image1}
+          resultImage={topMatches[0].image_base64}
+          resultImgName={topMatches[0].img}
+          confidenceScore={confidenceScore}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
     </div>
   );
 };
