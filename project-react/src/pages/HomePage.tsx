@@ -10,6 +10,7 @@ import { analyzeFace, getBestMatch } from "../api/laravelApi";
 import TopMatches from "../components/TopMatches";
 import BestMatch from "../components/BestMatch";
 import ImageComparisonPopup from "../components/ImageComparisonPopup"; // import the popup component
+import LoadingPopup from "../components/LoadingPopup";
 import "../index.css";
 
 const HomePage = () => {
@@ -34,7 +35,7 @@ const HomePage = () => {
     return () => window.removeEventListener("storage", darkModeListener);
   }, []);
 
-  // Add state for the popup visibility
+  // Transparent Popup during analysis
   const [showPopup, setShowPopup] = useState(false);
 
   // Image states
@@ -212,6 +213,25 @@ const HomePage = () => {
           onClose={() => setShowPopup(false)}
         />
       )}
+
+      {/* Show Loading Popup during analysis */}
+      {isComparing && <LoadingPopup message="Finding Matches..." />}
+
+      {/* Show ImageComparisonPopup if a match is found */}
+      {showPopup && comparisonResult && (
+        <ImageComparisonPopup
+          originalImage={image1!}
+          resultImage={comparisonResult.image_base64}
+          resultImgName={comparisonResult.img}
+          confidenceScore={confidenceScore!}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
+
+      {/* Your existing components */}
+      <button onClick={handleCompare} disabled={isComparing}>
+        {isComparing ? "Analyzing..." : "Find Similar Faces"}
+      </button>
     </div>
   );
 };
