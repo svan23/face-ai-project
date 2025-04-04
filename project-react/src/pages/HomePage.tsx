@@ -217,21 +217,10 @@ const HomePage = () => {
       {/* Show Loading Popup during analysis */}
       {isComparing && <LoadingPopup message="Finding Matches..." />}
 
-      {/* Show ImageComparisonPopup if a match is found */}
-      {showPopup && comparisonResult && (
-        <ImageComparisonPopup
-          originalImage={image1!}
-          resultImage={comparisonResult.image_base64}
-          resultImgName={comparisonResult.img}
-          confidenceScore={confidenceScore!}
-          onClose={() => setShowPopup(false)}
-        />
-      )}
-
       {/* Your existing components */}
-      <button onClick={handleCompare} disabled={isComparing}>
+      {/* <button onClick={handleCompare} disabled={isComparing}>
         {isComparing ? "Analyzing..." : "Find Similar Faces"}
-      </button>
+      </button> */}
     </div>
   );
 };
