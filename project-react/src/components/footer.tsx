@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { FaRegFaceSmile, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa6";
 
 const Footer = () => {
@@ -15,10 +15,10 @@ const Footer = () => {
         
         <div className="row g-4">
           {/* Brand Column */}
-          <div className="col-md-5 mb-3 mb-md-0">
+          <div className="col-md-6 mb-3 mb-md-0">
             <div className="d-flex align-items-center mb-2">
               <FaRegFaceSmile className="fs-4 text-primary me-2" />
-              <h5 className="fw-bold mb-0">TwinFace AI</h5>
+              <h5 className="fw-bold mb-0">WhoYou?</h5>
             </div>
             <p className="text-white-50 mb-3 small">
               Find your celebrity doppelgänger with our advanced AI facial comparison technology.
@@ -32,29 +32,15 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Quick Links */}
-          <div className="col-md-3 mb-3 mb-md-0">
-            <h6 className="mb-2 fw-bold small text-uppercase">Navigation</h6>
-            <ul className="list-unstyled mb-0 small">
-              {quickLinks.map((link, index) => (
-                <li key={index} className="mb-1">
-                  <Link to={link.to} className="footer-link">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
           {/* Contact Info */}
-          <div className="col-md-4">
+          <div className="col-md-6">
             <h6 className="mb-2 fw-bold small text-uppercase">Contact Us</h6>
             <ul className="list-unstyled mb-0 small">
               <li className="mb-1">
-                <a href="mailto:hello@twinface.ai" className="footer-link">hello@twinface.ai</a>
+                <a href="mailto:hello@twinface.ai" className="footer-link">info@whoyou.ai</a>
               </li>
               <li className="mb-1">
-                <a href="tel:+11234567890" className="footer-link">+1 (123) 456-7890</a>
+                <a href="tel:+11234567890" className="footer-link">+1 (431) 688-6858</a>
               </li>
             </ul>
           </div>
@@ -63,7 +49,7 @@ const Footer = () => {
         <hr className="border-secondary my-3 opacity-25" />
         
         <div className="text-center">
-          <p className="small mb-0 text-white-50">&copy; {currentYear} TwinFace AI. All rights reserved.</p>
+          <p className="small mb-0 text-white-50">&copy; {currentYear} WhoYou. All rights reserved.</p>
         </div>
       </div>
       
@@ -104,18 +90,19 @@ const Footer = () => {
 
 // Simplified data arrays
 const socialLinks = [
-  { icon: FaFacebook, link: "#" },
-  { icon: FaTwitter, link: "#" },
-  { icon: FaInstagram, link: "#" },
-  { icon: FaLinkedin, link: "#" }
+  { icon: FaFacebook, link: "https://www.facebook.com/" },
+  { icon: FaTwitter, link: "https://x.com/?lang=en-ca" },
+  { icon: FaInstagram, link: "https://www.instagram.com/" },
+  { icon: FaLinkedin, link: "https://www.linkedin.com/" }
 ];
 
-const quickLinks = [
-  { name: "Home", to: "/" },
-  { name: "About", to: "/about" },
-  { name: "Pricing", to: "/pricing" },
-  { name: "Contact", to: "/contact" },
-  { name: "Privacy Policy", to: "/privacy" }
-];
+// We can keep the quickLinks array definition but we won't use it
+// const quickLinks = [
+//   { name: "Home", to: "/" },
+//   { name: "About", to: "/about" },
+//   { name: "Pricing", to: "/pricing" },
+//   { name: "Contact", to: "/contact" },
+//   { name: "Privacy Policy", to: "/privacy" }
+// ];
 
 export default Footer;

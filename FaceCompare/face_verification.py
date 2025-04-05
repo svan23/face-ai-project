@@ -49,7 +49,7 @@ def get_top_match(reference_image_path, folder):
     best_distance = float('inf')
     cpu_count = multiprocessing.cpu_count()
 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=cpu_count) as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=2) as executor:
         futures = {
             executor.submit(
                 DeepFace.verify,

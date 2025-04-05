@@ -1,15 +1,10 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
-import ScrollImage from "../components/scrollimage";
 import PrivacyNotice from "../components/PrivacyNotice";
 import ImageUploadSection from "../components/ImageUploadSection";
-import InformationSection from "../components/InformationSection";
-import CallToAction from "../components/CallToAction";
 import { analyzeFace, getBestMatch } from "../api/laravelApi";
-import TopMatches from "../components/TopMatches";
-import BestMatch from "../components/BestMatch";
-import ImageComparisonPopup from "../components/ImageComparisonPopup"; // import the popup component
+import ImageComparisonPopup from "../components/ImageComparisonPopupProps"; // import the popup component
 import LoadingPopup from "../components/LoadingPopup";
 import "../index.css";
 
@@ -161,8 +156,6 @@ const HomePage = () => {
     >
       <Navbar />
 
-      {/* Scrolling hero section with celebrity faces */}
-      <ScrollImage />
 
       <main className="flex-grow-1 pb-5">
         <div className="container">
@@ -211,6 +204,7 @@ const HomePage = () => {
           resultImgName={topMatches[0].img}
           confidenceScore={confidenceScore}
           onClose={() => setShowPopup(false)}
+          onReset={handleReset}
         />
       )}
 
