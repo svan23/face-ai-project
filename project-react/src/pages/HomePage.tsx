@@ -6,7 +6,7 @@ import PrivacyNotice from "../components/PrivacyNotice";
 import ImageUploadSection from "../components/ImageUploadSection";
 import InformationSection from "../components/InformationSection";
 import CallToAction from "../components/CallToAction";
-import { analyzeFace, getBestMatch } from "../api/laravelApi";
+import { analyzeFace, getBestMatch } from "../api/routeApi";
 import TopMatches from "../components/TopMatches";
 import BestMatch from "../components/BestMatch";
 import ImageComparisonPopup from "../components/ImageComparisonPopup"; // import the popup component
