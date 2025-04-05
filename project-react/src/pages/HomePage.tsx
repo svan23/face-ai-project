@@ -3,12 +3,8 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import PrivacyNotice from "../components/PrivacyNotice";
 import ImageUploadSection from "../components/ImageUploadSection";
-import InformationSection from "../components/InformationSection";
-import CallToAction from "../components/CallToAction";
-import { analyzeFace, getBestMatch } from "../api/routeApi";
-import TopMatches from "../components/TopMatches";
-import BestMatch from "../components/BestMatch";
-import ImageComparisonPopup from "../components/ImageComparisonPopup"; // import the popup component
+import {getBestMatch } from "../api/routeApi";
+import ImageComparisonPopup from "../components/ImageComparisonPopupProps"; // import the popup component
 import LoadingPopup from "../components/LoadingPopup";
 import "../index.css";
 
