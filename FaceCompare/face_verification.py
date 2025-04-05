@@ -55,7 +55,7 @@ def get_top_match(reference_image_path, folder):
                 DeepFace.verify,
                 reference_image_path,
                 os.path.join(folder, img),
-                model_name='Facenet',
+                model_name='ArcFace',
                 enforce_detection=False
             ): img
             for img in image_files
