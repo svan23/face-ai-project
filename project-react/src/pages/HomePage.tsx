@@ -3,12 +3,8 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import PrivacyNotice from "../components/PrivacyNotice";
 import ImageUploadSection from "../components/ImageUploadSection";
-import InformationSection from "../components/InformationSection";
-import CallToAction from "../components/CallToAction";
-import { analyzeFace, getBestMatch } from "../api/routeApi";
-import TopMatches from "../components/TopMatches";
-import BestMatch from "../components/BestMatch";
-import ImageComparisonPopup from "../components/ImageComparisonPopup"; // import the popup component
+import { getBestMatch } from "../api/routeApi";
+import ImageComparisonPopup from "../components/ImageComparisonPopupProps"; // import the popup component
 import LoadingPopup from "../components/LoadingPopup";
 import "../index.css";
 
@@ -123,7 +119,6 @@ const HomePage = () => {
 
     try {
       const result = await getBestMatch(selectedFile1);
-      // result = {'img': best_match, 'distance': best_distance, 'image_base64': encoded_string}
       if (result && result.img) {
         // Save the single best match as an array for consistency with the UI that expects an array
         setTopMatches([result]);
