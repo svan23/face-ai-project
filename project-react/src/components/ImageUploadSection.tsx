@@ -38,10 +38,10 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
 
   // You can keep this function for any component-specific reset logic
   // but make sure to call the parent's onReset too
-  const handleReset = () => {
-    // Call the parent's reset function
-    onReset();
-  };
+  // const handleReset = () => {
+  //   // Call the parent's reset function
+  //   onReset();
+  // };
 
   // Define styles as JavaScript objects
   const themedDashedBorderStyle = {
