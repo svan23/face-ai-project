@@ -155,9 +155,11 @@ const HomePage = () => {
     >
       <Navbar />
 
+      {/* Add spacing to account for fixed navbar */}
+      <div style={{ paddingTop: "76px" }}></div>
 
       <main className="flex-grow-1 pb-5">
-        <div className="container">
+        <div className="container pt-4">
           {/* Privacy notice section */}
           <PrivacyNotice />
 
@@ -176,14 +178,6 @@ const HomePage = () => {
             onCompare={handleCompare}
             onReset={handleReset}
           />
-
-          {/* Information tabs section */}
-          {/* <InformationSection /> */}
-          {/* <TopMatches /> */}
-          {/* <BestMatch file={selectedFile1} /> */}
-
-          {/* Call to action section */}
-          {/* <CallToAction /> */}
         </div>
       </main>
 
