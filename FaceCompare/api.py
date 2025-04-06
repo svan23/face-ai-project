@@ -3,7 +3,12 @@ from flask_cors import CORS
 from routes import routes
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+# Configure CORS to allow your frontend domain
+CORS(app, resources={r"/*": {
+    "origins": ["https://whoyou-dqh4fudjhze0ggb5.canadacentral-01.azurewebsites.net"],
+    "methods": ["GET", "POST", "OPTIONS"],
+    "allow_headers": ["Content-Type"]
+}})
 
 # Register blueprint
 app.register_blueprint(routes)

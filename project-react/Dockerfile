@@ -1,18 +1,32 @@
-FROM node:18-alpine AS builder
+# Base image
+FROM node:18-alpine as build
 
+# Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
+# Copy package files
+COPY package.json package-lock.json ./
 
-# Copy the rest of the source code and build the app
+# First update the package-lock.json to match package.json
+RUN npm install --package-lock-only
+
+# Then perform a clean install with the updated lock file
+RUN npm ci
+
+# Copy all files
 COPY . .
-RUN npm run build:ci
 
+# Build the app
+RUN npm run build
+
+# Production stage
 FROM nginx:alpine
-# Copy the built static files to nginx serving directory
-COPY --from=builder /app/dist /usr/share/nginx/html
 
+# Copy built files to nginx
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expose port
 EXPOSE 80
+
+# Command to run nginx
 CMD ["nginx", "-g", "daemon off;"]
