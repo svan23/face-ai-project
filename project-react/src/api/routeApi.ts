@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://127.0.0.1:5001"; // Replace with your Laravel URL
+const API_BASE_URL = "https://whoyou-ah-b6ghhmgvdka7dhdj.canadacentral-01.azurewebsites.net/api"; // Added '/api' prefix
 
 export const getBestMatch = async (file: File) => {
   const formData = new FormData();
