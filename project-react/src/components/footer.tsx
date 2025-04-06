@@ -1,18 +1,23 @@
-// import { Link } from "react-router-dom";
 import { FaRegFaceSmile, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa6";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   return (
     <footer className="bg-dark text-white py-4 mt-auto">
       <div className="container">
         {/* Gradient Accent */}
         <div className="position-relative mb-4">
-          <div className="position-absolute w-100" style={{ height: "3px", top: "-10px", 
-            background: "linear-gradient(to right, #8F87F1, #C68EFD, #E9A5F1)" }}></div>
+          <div
+            className="position-absolute w-100"
+            style={{
+              height: "3px",
+              top: "-10px",
+              background: "linear-gradient(to right, #8F87F1, #C68EFD, #E9A5F1)",
+            }}
+          ></div>
         </div>
-        
+
         <div className="row g-4">
           {/* Brand Column */}
           <div className="col-md-6 mb-3 mb-md-0">
@@ -31,29 +36,50 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          
-          {/* Contact Info */}
+
+          {/* Contact & Team Info Column */}
           <div className="col-md-6">
-            <h6 className="mb-2 fw-bold small text-uppercase">Contact Us</h6>
-            <ul className="list-unstyled mb-0 small">
-              <li className="mb-1">
-                <a href="mailto:hello@twinface.ai" className="footer-link">info@whoyou.ai</a>
-              </li>
-              <li className="mb-1">
-                <a href="tel:+11234567890" className="footer-link">+1 (431) 688-6858</a>
-              </li>
-            </ul>
+            <div className="row">
+              {/* Contact Us Column */}
+              <div className="col-md-6">
+                <h6 className="mb-2 fw-bold small text-uppercase">Contact Us</h6>
+                <ul className="list-unstyled mb-0 small">
+                  <li className="mb-1">
+                    <a href="mailto:hello@twinface.ai" className="footer-link">
+                      info@whoyou.ai
+                    </a>
+                  </li>
+                  <li className="mb-1">
+                    <a href="tel:+11234567890" className="footer-link">
+                      +1 (431) 688-6858
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              {/* Team Column */}
+              <div className="col-md-6">
+                <h6 className="mb-2 fw-bold small text-uppercase">Team</h6>
+                <ul className="list-unstyled mb-0 small">
+                  <li className="mb-1 text-white-50">Anna Dao A01275485</li>
+                  <li className="mb-1 text-white-50">Gem Baojimin Sha A01345766</li>
+                  <li className="mb-1 text-white-50">Vanessa La A01336725</li>
+                  <li className="mb-1 text-white-50">Jason Hong A01232139</li>
+                  <li className="mb-1 text-white-50">Andre Hindarmara A01075140</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-        
+
         <hr className="border-secondary my-3 opacity-25" />
-        
+
         <div className="text-center">
-          <p className="small mb-0 text-white-50">&copy; {currentYear} WhoYou. All rights reserved.</p>
+          <p className="small mb-0 text-white-50">
+            &copy; {currentYear} WhoYou. All rights reserved.
+          </p>
         </div>
       </div>
-      
-      {/* Simplified CSS */}
+
       <style>
         {`
         .footer-link {
@@ -61,11 +87,9 @@ const Footer = () => {
           text-decoration: none;
           transition: color 0.2s ease;
         }
-        
         .footer-link:hover {
           color: white;
         }
-        
         .social-icon-link {
           display: inline-flex;
           align-items: center;
@@ -77,7 +101,6 @@ const Footer = () => {
           color: rgba(255, 255, 255, 0.6);
           transition: all 0.2s ease;
         }
-        
         .social-icon-link:hover {
           background-color: rgba(198, 142, 253, 0.3);
           color: white;
@@ -88,21 +111,11 @@ const Footer = () => {
   );
 };
 
-// Simplified data arrays
 const socialLinks = [
   { icon: FaFacebook, link: "https://www.facebook.com/" },
   { icon: FaTwitter, link: "https://x.com/?lang=en-ca" },
   { icon: FaInstagram, link: "https://www.instagram.com/" },
-  { icon: FaLinkedin, link: "https://www.linkedin.com/" }
+  { icon: FaLinkedin, link: "https://www.linkedin.com/" },
 ];
-
-// We can keep the quickLinks array definition but we won't use it
-// const quickLinks = [
-//   { name: "Home", to: "/" },
-//   { name: "About", to: "/about" },
-//   { name: "Pricing", to: "/pricing" },
-//   { name: "Contact", to: "/contact" },
-//   { name: "Privacy Policy", to: "/privacy" }
-// ];
 
 export default Footer;
