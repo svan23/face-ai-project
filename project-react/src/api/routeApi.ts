@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Always use the full URL
-const API_BASE_URL = "http://128.85.34.139"; 
+const API_BASE_URL = "https://128.85.34.139"; 
 
 export const getBestMatch = async (file: File) => {
   const formData = new FormData();
