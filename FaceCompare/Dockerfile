@@ -1,22 +1,32 @@
-FROM python:3.11-slim
-
-# Install system dependencies including libGL for OpenCV and libglib2.0 for libgthread
-RUN apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0
+# Base image with Python 3.9
+FROM python:3.9-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy only requirements and install them
+# Install system dependencies required by OpenCV and DeepFace
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxrender1 \
+    libxext6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements file
 COPY requirements.txt .
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the API code
+# Copy the FaceCompare application code
 COPY . .
 
-# Set environment variables for Flask
-ENV FLASK_APP=api.py
-ENV FLASK_RUN_HOST=0.0.0.0
+# Create a folder for celebrity images if it doesn't exist
+RUN mkdir -p images
+
+# Expose the port the app runs on
 EXPOSE 5001
 
-# Run the Flask application
-CMD ["python3", "api.py"]
+# Command to run the application
+CMD ["python", "api.py"]

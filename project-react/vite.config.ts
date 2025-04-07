@@ -6,8 +6,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/top-match': {
-        target: 'https://whoyou-ah-b6ghhmgvdka7dhdj.canadacentral-01.azurewebsites.net',
-        changeOrigin: true
+        target: 'https://whoyouwebapp-aneqbpgwc2decyd8.canadacentral-01.azurewebsites.net',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path
       }
     }
   }
