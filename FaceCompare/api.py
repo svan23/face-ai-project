@@ -3,14 +3,24 @@ from flask_cors import CORS
 from routes import routes
 
 app = Flask(__name__)
-# Configure CORS to allow your frontend domain
-CORS(app, resources={r"/*": {
-    "origins": ["https://whoyou-dqh4fudjhze0ggb5.canadacentral-01.azurewebsites.net"],
-    "methods": ["GET", "POST", "OPTIONS"],
-    "allow_headers": ["Content-Type"]
-}})
+# Option 1: Allow all origins (for development/testing)
+CORS(app)
 
-# Register blueprint
+# Option 2: Allow multiple specific origins
+CORS(app, 
+     resources={r"/*": {
+         "origins": [
+             "https://whoyou-dqh4fudjhze0ggb5.canadacentral-01.azurewebsites.net", 
+             "http://localhost:5173",  # For local development
+             "*"  # Temporarily allow all origins for testing
+         ],
+         "methods": ["GET", "POST", "OPTIONS"],
+         "allow_headers": ["Content-Type", "Authorization"],
+         "expose_headers": ["Content-Type"],
+         "supports_credentials": True,
+         "max_age": 600
+     }})
+
 app.register_blueprint(routes)
 
 if __name__ == '__main__':
